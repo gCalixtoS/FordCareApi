@@ -1,10 +1,10 @@
 'use strict'
-require('../models/car-model')
+require('../models/part-model')
 const base = require('../bin/base/repository-base')
 
 class CarRepository {
     constructor (){
-        this._base = new base('cars')
+        this._base = new base('model_datas')
     }
 
     async create(data){
@@ -18,6 +18,10 @@ class CarRepository {
     async getById(id){
         const cars = await this._base.getById(id)
         return cars === null ? [] : cars
+    }
+    async getByCar(carId){
+        const parts = await this._base._model.find({CAR: carId})
+        return parts === null ? [] : parts
     }
 
 

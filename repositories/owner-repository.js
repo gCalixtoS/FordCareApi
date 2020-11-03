@@ -1,6 +1,7 @@
 'use strict'
 require('../models/owner-model')
 const base = require('../bin/base/repository-base')
+const md5 =require('md5')
 
 class OwnerRepository {
     constructor (){

@@ -15,6 +15,9 @@ class RepositoryBase {
     async get(){
         return await this._model.find()
     }
+    async getById(id){
+        return await this._model.findById(id)
+    }
 
 
 }

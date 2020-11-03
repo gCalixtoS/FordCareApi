@@ -12,7 +12,7 @@ const carModel = new schema({
     color: {required:true, type:String},
     carBody: {required:true, type:String},
     owner:{required:true, type:schema.ObjectId, ref:'owners'},
-    acquisitionDate:{required:true, type:Date}
+    acquisitionDate:{type:Date}
 })
 
 module.exports = mongoose.model('cars', carModel)

@@ -47,22 +47,27 @@ ownerController.getById = async (req, res) => {
 }
 
 ownerController.authenticate = async (req, res) => {
+    try {
+        let _validationContract = new validation()
 
-    let _validationContract = new validation()
-
-    _validationContract.isRequired(req.body.email, 'E-mail must be informed.')
-    _validationContract.isRequired(req.body.password, 'Password must be informed.')
-
-    if(!_validationContract.isValid()){
-        res.status(400).send({message:'Login failed', validation:_validationContract.errors()})
-        return
-    }
-    let owner = await _repo.authenticate(req.body.email, req.body.password)
-    if(owner){
-        res.status(200).send({
-            owner: owner,
-            token: jwt.sign(owner, variables.Security.secret)
-        })
+        _validationContract.isRequired(req.body.email, 'E-mail must be informed.')
+        _validationContract.isRequired(req.body.password, 'Password must be informed.')
+    
+        if(!_validationContract.isValid()){
+            res.status(400).send({message:'Login failed', validation:_validationContract.errors()})
+            return
+        }
+        
+        let owner = await _repo.authenticate(req.body.email, req.body.password)
+        
+        if(owner){
+            res.status(200).send({
+                owner: owner,
+                token: jwt.sign({owner:owner}, variables.Security.secret)
+            })
+        }
+    } catch (error) {
+        res.status(500).send('error')
     }
 }
 
