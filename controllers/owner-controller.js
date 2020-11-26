@@ -71,6 +71,24 @@ ownerController.authenticate = async (req, res) => {
     }
 }
 
+ownerController.amqp = async(req, res) => {
+    var q = 'hello';
+
+    var open = require('amqplib').connect('amqps://rabbitmq:passwordAwsRabbitMQ@b-8e07b895-7a7f-4084-b101-85f38130ee80.mq.sa-east-1.amazonaws.com:5671');
+
+    // Publisher
+    open.then(function(conn) {
+        
+        return conn.createChannel();
+    }).then(function(ch) {
+        return ch.assertQueue(q).then(function(ok) {
+            return ch.sendToQueue(q, Buffer.from('something to do'))            
+        });
+    }).then(() => {
+        res.status(200).send({"message":"success"})
+    }).catch(console.warn);
+}
+
 module.exports = ownerController
 
 
